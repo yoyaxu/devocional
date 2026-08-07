@@ -14,29 +14,24 @@ export interface JournalEntry {
   date: string;
 }
 
+export type ViewType = 'home' | 'reader' | 'favorites' | 'journal' | 'progress' | 'about' | 'mood';
+
 interface AppState {
-  // Favorites
   favorites: number[];
   toggleFavorite: (num: number) => void;
   isFavorite: (num: number) => boolean;
 
-  // Journal
   journal: Record<number, JournalEntry>;
   saveJournalEntry: (num: number, text: string) => void;
   getJournalEntry: (num: number) => JournalEntry | null;
 
-  // Reading Progress
   readReflections: number[];
   markAsRead: (num: number) => void;
   isRead: (num: number) => boolean;
-  getStreak: () => number;
-  getLastReadDate: () => string | null;
 
-  // Current view
-  currentView: 'home' | 'reader' | 'favorites' | 'journal' | 'progress';
-  setCurrentView: (view: 'home' | 'reader' | 'favorites' | 'journal' | 'progress') => void;
+  currentView: ViewType;
+  setCurrentView: (view: ViewType) => void;
 
-  // Current reflection being viewed
   currentReflection: number | null;
   setCurrentReflection: (num: number | null) => void;
 }
@@ -44,7 +39,6 @@ interface AppState {
 export const useAppStore = create<AppState>()(
   persist(
     (set, get) => ({
-      // Favorites
       favorites: [],
       toggleFavorite: (num: number) =>
         set((state) => ({
@@ -54,7 +48,6 @@ export const useAppStore = create<AppState>()(
         })),
       isFavorite: (num: number) => get().favorites.includes(num),
 
-      // Journal
       journal: {},
       saveJournalEntry: (num: number, text: string) =>
         set((state) => ({
@@ -65,7 +58,6 @@ export const useAppStore = create<AppState>()(
         })),
       getJournalEntry: (num: number) => get().journal[num] || null,
 
-      // Reading Progress
       readReflections: [],
       markAsRead: (num: number) =>
         set((state) => ({
@@ -74,25 +66,12 @@ export const useAppStore = create<AppState>()(
             : [...state.readReflections, num],
         })),
       isRead: (num: number) => get().readReflections.includes(num),
-      getStreak: () => {
-        const readDates = get().readReflections.length;
-        return readDates;
-      },
-      getLastReadDate: () => {
-        const state = get();
-        if (state.readReflections.length === 0) return null;
-        const lastNum = state.readReflections[state.readReflections.length - 1];
-        return new Date().toISOString();
-      },
 
-      // Navigation
-      currentView: 'home',
-      setCurrentView: (view) => set({ currentView: view }),
+      currentView: 'home' as ViewType,
+      setCurrentView: (view: ViewType) => set({ currentView: view }),
       currentReflection: null,
-      setCurrentReflection: (num) => set({ currentReflection: num }),
+      setCurrentReflection: (num: number | null) => set({ currentReflection: num }),
     }),
-    {
-      name: '365-reflexiones-storage',
-    }
+    { name: '365-reflexiones-v2' }
   )
 );
