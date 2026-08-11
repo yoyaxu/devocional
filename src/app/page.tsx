@@ -46,6 +46,7 @@ import {
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { ThemeProvider, useTheme } from "next-themes";
+import { LeafCorner, LeafDivider } from "@/components/LeafDecor";
 
 // Data
 const reflections: Reflection[] = bookData.reflexiones;
@@ -250,6 +251,8 @@ function DailyReflection({
     <div className="animate-fade-in-up">
       {/* Hero Card */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#EDF2EB] via-[#F5F3ED] to-[#E8E2D0] p-6 pb-7 mb-4 leaf-pattern">
+        <LeafCorner position="top-right" className="w-32 h-32" />
+        <LeafCorner position="bottom-left" className="w-24 h-24" />
         <div className="absolute top-0 right-0 w-36 h-36 bg-gradient-to-bl from-[#5B7C5A10] to-transparent rounded-full -translate-y-1/2 translate-x-1/4" />
         <div className="relative z-10">
           <div className="flex items-center justify-between mb-3">
@@ -307,6 +310,7 @@ function DailyReflection({
         </div>
       </div>
 
+      <LeafDivider className="my-4" />
       {/* Read Full Button */}
       <Button
         className="w-full gap-2"
@@ -677,8 +681,10 @@ function AboutBook({
         })}
       </div>
 
-      <div className="mt-6 p-4 rounded-xl bg-gradient-to-br from-primary/5 to-accent/20">
-        <p className="text-xs text-muted-foreground leading-relaxed">
+      <LeafDivider className="mt-5 mb-4" />
+      <div className="relative p-4 rounded-xl bg-gradient-to-br from-primary/5 to-accent/20 overflow-hidden">
+        <LeafCorner position="top-right" className="w-20 h-20" />
+        <p className="relative z-10 text-xs text-muted-foreground leading-relaxed">
           <span className="font-semibold text-foreground">365 Reflexiones — una para cada día</span> es un
           devocional nacido de la experiencia y la revelación divina del pastor Nicolás de Jesús Abreu.
           Cada reflexión ofrece consejos prácticos, verdades bíblicas y enseñanzas aplicables
@@ -740,8 +746,9 @@ function ReflectionDetail({
     <Dialog open={true} onOpenChange={onClose}>
       <DialogContent className="max-w-lg max-h-[92vh] p-0 gap-0 overflow-hidden rounded-2xl">
         {/* Header */}
-        <div className="bg-gradient-to-br from-[#EDF2EB] via-[#F5F3ED] to-[#E8E2D0] p-5 pb-4 relative leaf-pattern">
-          <div className="absolute top-0 right-0 w-28 h-28 bg-gradient-to-bl from-[#5B7C5A08] to-transparent rounded-full -translate-y-1/2 translate-x-1/4" />
+        <div className="bg-gradient-to-br from-[#EDF2EB] via-[#F5F3ED] to-[#E8E2D0] p-5 pb-4 relative leaf-pattern overflow-hidden">
+          <LeafCorner position="top-right" className="w-28 h-28" />
+          <LeafCorner position="bottom-left" className="w-20 h-20" />
           <DialogHeader className="relative z-10">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -881,8 +888,9 @@ function TextSectionDialog({
   return (
     <Dialog open={true} onOpenChange={onClose}>
       <DialogContent className="max-w-lg max-h-[85vh] p-0 gap-0 overflow-hidden rounded-2xl">
-        <div className="bg-gradient-to-br from-[#EDF2EB] to-[#E8E2D0] p-5 pb-4 leaf-pattern">
-          <DialogHeader>
+        <div className="relative bg-gradient-to-br from-[#EDF2EB] to-[#E8E2D0] p-5 pb-4 leaf-pattern overflow-hidden">
+          <LeafCorner position="top-right" className="w-24 h-24" />
+          <DialogHeader className="relative z-10">
             <DialogTitle
               className="text-lg font-bold leading-snug"
               style={{ fontFamily: "var(--font-serif), Georgia, serif" }}
