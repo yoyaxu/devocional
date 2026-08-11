@@ -744,7 +744,7 @@ function ReflectionDetail({
 
   return (
     <Dialog open={true} onOpenChange={onClose}>
-      <DialogContent className="max-w-lg max-h-[92vh] p-0 gap-0 overflow-hidden rounded-2xl">
+      <DialogContent showCloseButton={false} className="max-w-lg max-h-[92vh] p-0 gap-0 overflow-hidden rounded-2xl">
         {/* Header */}
         <div className="bg-gradient-to-br from-[#EDF2EB] via-[#F5F3ED] to-[#E8E2D0] p-5 pb-4 relative leaf-pattern overflow-hidden">
           <LeafCorner position="top-right" className="w-28 h-28" />
@@ -765,22 +765,31 @@ function ReflectionDetail({
                   </Badge>
                 )}
               </div>
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-2 mr-1">
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-7 w-7 rounded-full"
+                  className="h-8 w-8 rounded-full"
                   onClick={() => toggleFavorite(reflection.number)}
                 >
-                  <HeartFilled className={`h-3.5 w-3.5 ${favorite ? "fill-red-500 text-red-500" : "text-muted-foreground"}`} />
+                  <HeartFilled className={`h-4 w-4 ${favorite ? "fill-red-500 text-red-500" : "text-muted-foreground"}`} />
                 </Button>
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-7 w-7 rounded-full"
+                  className="h-8 w-8 rounded-full"
                   onClick={handleShare}
                 >
-                  <Share2 className="h-3.5 w-3.5" />
+                  <Share2 className="h-4 w-4" />
+                </Button>
+                <div className="w-px h-5 bg-border/60 mx-1" />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8 rounded-full text-muted-foreground hover:text-foreground"
+                  onClick={onClose}
+                >
+                  <X className="h-4 w-4" />
                 </Button>
               </div>
             </div>
@@ -887,12 +896,12 @@ function TextSectionDialog({
 
   return (
     <Dialog open={true} onOpenChange={onClose}>
-      <DialogContent className="max-w-lg max-h-[85vh] p-0 gap-0 overflow-hidden rounded-2xl">
-        <div className="relative bg-gradient-to-br from-[#EDF2EB] to-[#E8E2D0] p-5 pb-4 leaf-pattern overflow-hidden">
+      <DialogContent showCloseButton={false} className="max-w-lg max-h-[85vh] p-0 gap-0 overflow-hidden rounded-2xl">
+        <div className="relative bg-gradient-to-br from-[#EDF2EB] to-[#E8E2D0] p-5 pb-4 pr-12 leaf-pattern overflow-hidden">
           <LeafCorner position="top-right" className="w-24 h-24" />
           <DialogHeader className="relative z-10">
             <DialogTitle
-              className="text-lg font-bold leading-snug"
+              className="text-lg font-bold leading-snug pr-6"
               style={{ fontFamily: "var(--font-serif), Georgia, serif" }}
             >
               {data.title}
@@ -908,6 +917,12 @@ function TextSectionDialog({
             {data.text}
           </p>
         </div>
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 z-20 h-8 w-8 rounded-full bg-white/60 backdrop-blur flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <X className="h-4 w-4" />
+        </button>
       </DialogContent>
     </Dialog>
   );
