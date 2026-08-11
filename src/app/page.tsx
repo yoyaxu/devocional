@@ -54,6 +54,20 @@ const prologo1 = bookData.prologo1;
 const prologo2 = bookData.prologo2;
 const introduccion = bookData.introduccion;
 
+// Convertir "TODAS MAYÚSCULAS" a "Todas mayúsculas"
+function toSentenceCase(str: string): string {
+  if (!str) return str;
+  if (str !== str.toUpperCase()) return str;
+  const lower = str.toLowerCase();
+  const minorWords = new Set(['de','del','el','la','los','las','un','una','y','a','en','con','por','para','que','al','se','su','es','no','e','o','ni']);
+  return lower.replace(/(^|\s+)(\S+)/g, (match, space, word) => {
+    // Always capitalize first word
+    if (!space) return word.charAt(0).toUpperCase() + word.slice(1);
+    if (minorWords.has(word)) return space + word;
+    return space + word.charAt(0).toUpperCase() + word.slice(1);
+  });
+}
+
 // Get day of year (1-365)
 function getDayOfYear(): number {
   const now = new Date();
@@ -238,7 +252,7 @@ function DailyReflection({
 
   const handleShare = async () => {
     const quote = reflection.quote || reflection.body.slice(0, 140);
-    const text = `\u2728 Reflexión del día — ${reflection.title}\n\n\u201C${quote}\u201D\n\n\uD83D\uDCD6 365 Reflexiones — Pastor Nicolás Abreu`;
+    const text = `\u2728 Reflexión del día — ${toSentenceCase(reflection.title)}\n\n\u201C${quote}\u201D\n\n\uD83D\uDCD6 365 Reflexiones — Pastor Nicolás Abreu`;
     try {
       await navigator.clipboard.writeText(text);
       useToast.getState().toast({ title: "\u00A1Copiado!", description: "Listo para compartir" });
@@ -276,7 +290,7 @@ function DailyReflection({
             className="text-2xl font-bold leading-tight mb-3 text-foreground"
             style={{ fontFamily: "var(--font-serif), Georgia, serif" }}
           >
-            {reflection.title}
+            {toSentenceCase(reflection.title)}
           </h2>
 
           {reflection.quote && (
@@ -413,7 +427,7 @@ function MoodRecommender({
                     </div>
                     <div className="flex-1 min-w-0">
                       <h3 className="font-semibold text-sm truncate group-hover:text-primary transition-colors">
-                        {r.title}
+                        {toSentenceCase(r.title)}
                       </h3>
                       {r.quote && (
                         <p className="text-[11px] text-muted-foreground mt-0.5 line-clamp-1">
@@ -513,7 +527,7 @@ function Reader({
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1.5">
                     <h3 className="font-semibold text-[13px] truncate group-hover:text-primary transition-colors">
-                      {r.title}
+                      {toSentenceCase(r.title)}
                     </h3>
                     {isFavorite(r.number) && (
                       <HeartFilled className="h-2.5 w-2.5 fill-red-400 text-red-400 flex-shrink-0" />
@@ -596,7 +610,7 @@ function Favorites({
                   </div>
                   <div className="flex-1 min-w-0">
                     <h3 className="font-semibold text-[13px] group-hover:text-primary transition-colors">
-                      {r.title}
+                      {toSentenceCase(r.title)}
                     </h3>
                     <p className="text-[11px] text-muted-foreground">
                       #{r.number}
@@ -735,7 +749,7 @@ function ReflectionDetail({
   };
 
   const handleShare = async () => {
-    const text = `\u2728 ${reflection.title}\n\n"${reflection.quote || reflection.body.slice(0, 200)}"\n\n\uD83D\uDCD6 365 Reflexiones — Pastor Nicolás Abreu`;
+    const text = `\u2728 ${toSentenceCase(reflection.title)}\n\n"${reflection.quote || reflection.body.slice(0, 200)}"\n\n\uD83D\uDCD6 365 Reflexiones — Pastor Nicolás Abreu`;
     try {
       await navigator.clipboard.writeText(text);
       useToast.getState().toast({ title: "\u00A1Copiado!", description: "Listo para compartir" });
@@ -797,7 +811,7 @@ function ReflectionDetail({
               className="text-lg font-bold mt-2 leading-snug"
               style={{ fontFamily: "var(--font-serif), Georgia, serif" }}
             >
-              {reflection.title}
+              {toSentenceCase(reflection.title)}
             </DialogTitle>
           </DialogHeader>
         </div>
@@ -809,16 +823,18 @@ function ReflectionDetail({
         >
           {reflection.quote && (
             <div className="reflection-quote mb-4">
-              <p className="text-sm leading-relaxed text-foreground/85">
+              <p className="text-[15px] leading-relaxed text-foreground/85">
                 {reflection.quote}
               </p>
             </div>
           )}
 
           {reflection.body && (
-            <p className="text-sm leading-[1.8] text-foreground/75 whitespace-pre-line">
-              {reflection.body}
-            </p>
+            <div className="text-[15px] leading-[1.8] text-foreground/75 space-y-3">
+              {reflection.body.split('\n\n').map((paragraph, i) => (
+                <p key={i}>{paragraph.trim()}</p>
+              ))}
+            </div>
           )}
 
           <Separator className="my-4" />
@@ -904,7 +920,7 @@ function TextSectionDialog({
               className="text-lg font-bold leading-snug pr-6"
               style={{ fontFamily: "var(--font-serif), Georgia, serif" }}
             >
-              {data.title}
+              {toSentenceCase(data.title)}
             </DialogTitle>
             <p className="text-xs text-muted-foreground mt-0.5">{data.author}</p>
           </DialogHeader>
@@ -913,9 +929,11 @@ function TextSectionDialog({
           ref={scrollRef}
           className="overflow-y-auto custom-scrollbar max-h-[65vh] px-5 py-5"
         >
-          <p className="text-sm leading-[1.85] text-foreground/80 whitespace-pre-line">
-            {data.text}
-          </p>
+          <div className="text-[15px] leading-[1.85] text-foreground/80 space-y-3">
+            {data.text.split('\n\n').map((paragraph, i) => (
+              <p key={i}>{paragraph.trim()}</p>
+            ))}
+          </div>
         </div>
         <button
           onClick={onClose}
